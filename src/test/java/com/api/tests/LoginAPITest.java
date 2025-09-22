@@ -9,7 +9,9 @@ import java.io.IOException;
 import org.testng.annotations.Test;
 
 import com.api.pojo.UserCredentials;
-import static com.api.utils.ConfigManager.*;
+import com.api.utils.ConfigManager;
+
+//import static com.api.utils.ConfigManager.*;
 
 import io.restassured.http.ContentType;
 import static io.restassured.module.jsv.JsonSchemaValidator.*;
@@ -21,7 +23,7 @@ public class LoginAPITest {
 
 		
 		UserCredentials userCredentials = new UserCredentials("iamfd", "password");
-		given().baseUri(getProperty("BASE_URI")).contentType(ContentType.JSON).accept(ContentType.JSON)
+		given().baseUri(ConfigManager.getProperty("BASE_URI")).contentType(ContentType.JSON).accept(ContentType.JSON)
 				.body(userCredentials).log().uri().log().headers().log().method().log().body().when().post("/login")
 				.then()
 				.log().all()

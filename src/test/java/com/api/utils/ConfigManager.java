@@ -23,15 +23,19 @@ public class ConfigManager {
 		switch (env){
 		case "dev":{
 			path="config/config.dev.properties";
+			break;
 		}
 		case "qa":{
 			path="config/config.qa.properties";
+			break;
 		}
 		case "uat":{
 			path="config/config.uat.properties";
+			break;
 		}
 		default:
 			path="config/config.qa.properties";
+			break;
 		
 		}
 		
