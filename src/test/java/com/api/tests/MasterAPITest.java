@@ -15,6 +15,7 @@ import java.io.IOException;
 
 import org.testng.annotations.Test;
 
+import com.api.utils.SpecUtil;
 import com.github.fge.jsonschema.main.JsonValidator;
 
 import io.restassured.http.ContentType;
@@ -26,16 +27,12 @@ public class MasterAPITest {
 	public void masterAPITest() throws IOException {
 		
 		
-		given().baseUri(getProperty("BASE_URI"))
-		.header("Authorization",getToken(FD))
-		.contentType(ContentType.JSON)
-		.log().all()
+		given()
+		.spec(SpecUtil.requestSpecWithAuth(FD))
 		.when()
 		.post("master")   //default content type application/url-formencoded
 		.then()
-		.log().all()
-		.statusCode(200)
-		.time(lessThan(1000L))
+		.spec(SpecUtil.responseSpec_OK())
 		.body("message", equalTo("Success"))
 		.body("data", notNullValue())
 		.body("data", hasKey("mst_oem"))
@@ -54,15 +51,12 @@ public class MasterAPITest {
 	
 	@Test
 	public void invalidTokenMasterAPITest() throws IOException {
-		given().baseUri(getProperty("BASE_URI"))
-		.header("Authorization","")
-		.contentType(ContentType.JSON)
-		.log().all()
+		given()
+		.spec(SpecUtil.requestSpec())
 		.when()
 		.post("master")   //default content type application/url-formencoded
 		.then()
-		.log().all()
-		.statusCode(401);
+	.spec(SpecUtil.responseSpec_TEXT(401));
 		
 	}
 }
