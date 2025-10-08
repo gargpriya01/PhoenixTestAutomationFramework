@@ -10,7 +10,7 @@ import java.io.IOException;
 import org.testng.annotations.Test;
 
 import com.api.utils.AuthTokenProvider;
-import com.api.utils.SpecUtil;
+import static com.api.utils.SpecUtil.*;
 
 import static com.api.utils.ConfigManager.*;
 
@@ -18,14 +18,14 @@ import static io.restassured.module.jsv.JsonSchemaValidator.*;
 
 public class CountAPITest {
 
-	@Test
+	@Test(description = "Verify if the Count API response is giving correct response", groups= {"api","smoke","regression"})
 	public void verifyCountAPIResponse() throws IOException {
 		given()
-	    .spec(SpecUtil.requestSpecWithAuth(FD))
+	    .spec(requestSpecWithAuth(FD))
 		.when()
 		.get("dashboard/count")
 		.then()
-		.spec(SpecUtil.responseSpec_OK())
+		.spec(responseSpec_OK())
 		.body("message", equalTo("Success"))
 		.time(lessThan(1000L))
 		.body("data", notNullValue())
@@ -36,14 +36,14 @@ public class CountAPITest {
 		.body("data.key", containsInAnyOrder("pending_fst_assignment","pending_for_delivery","created_today"));
 	}
 	
-	@Test
+	@Test(description = "Verify if the Count API response is giving correct status code for invalid token", groups= {"api","smoke","regression"})
 	public void countAPITest_MissingAuthToken() throws IOException {
 		given()
-		.spec(SpecUtil.requestSpec())
+		.spec(requestSpec())
 		.when()
 		.get("dashboard/count")
 		.then()
-		.spec(SpecUtil.responseSpec_TEXT(401));
+		.spec(responseSpec_TEXT(401));
 		
 	}
 
