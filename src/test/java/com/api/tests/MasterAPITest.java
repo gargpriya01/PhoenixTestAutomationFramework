@@ -15,24 +15,23 @@ import java.io.IOException;
 
 import org.testng.annotations.Test;
 
-import com.api.utils.SpecUtil;
-import com.github.fge.jsonschema.main.JsonValidator;
+import static com.api.utils.SpecUtil.*;
 
 import io.restassured.http.ContentType;
-import io.restassured.module.jsv.JsonSchemaValidator;
+import static io.restassured.module.jsv.JsonSchemaValidator.*;
 
 public class MasterAPITest {
 
-	@Test
+	@Test(description = "Verify if the Master API response is giving correct response", groups= {"api","smoke","regression"})
 	public void masterAPITest() throws IOException {
 		
 		
 		given()
-		.spec(SpecUtil.requestSpecWithAuth(FD))
+		.spec(requestSpecWithAuth(FD))
 		.when()
 		.post("master")   //default content type application/url-formencoded
 		.then()
-		.spec(SpecUtil.responseSpec_OK())
+		.spec(responseSpec_OK())
 		.body("message", equalTo("Success"))
 		.body("data", notNullValue())
 		.body("data", hasKey("mst_oem"))
@@ -43,20 +42,20 @@ public class MasterAPITest {
 		.body("data.mst_model.size()",equalTo(3))
 		.body("data.mst_oem.id", everyItem(notNullValue()))
 		.body("data.mst_oem.name", everyItem(notNullValue()))
-		.body(JsonSchemaValidator.matchesJsonSchemaInClasspath("response-schema/MasterAPIResponseSchema.json"));
+		.body(matchesJsonSchemaInClasspath("response-schema/MasterAPIResponseSchema.json"));
 		
 		
 	}
 
 	
-	@Test
+	@Test(description = "Verify if the Master API response is giving correct status code for invalid token", groups= {"api","negative","smoke","regression"})
 	public void invalidTokenMasterAPITest() throws IOException {
 		given()
-		.spec(SpecUtil.requestSpec())
+		.spec(requestSpec())
 		.when()
 		.post("master")   //default content type application/url-formencoded
 		.then()
-	.spec(SpecUtil.responseSpec_TEXT(401));
+	.spec(responseSpec_TEXT(401));
 		
 	}
 }

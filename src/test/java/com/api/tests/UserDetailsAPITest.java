@@ -8,7 +8,7 @@ import java.io.IOException;
 
 import org.testng.annotations.Test;
 
-import com.api.utils.SpecUtil;
+import static com.api.utils.SpecUtil.*;
 
 import static com.api.constant.Role.*;
 
@@ -21,14 +21,14 @@ import io.restassured.http.Header;
 
 public class UserDetailsAPITest {
 
-	@Test
+	@Test(description = "Verify if the UserDetails API response is shown correctly", groups= {"api","smoke","regression"})
 	public void userDetailsAPITest() throws IOException {
 		Header authHeader = new Header("Authorization",getToken(SUP));
 
-		given().spec(SpecUtil.requestSpecWithAuth(FD))
+		given().spec(requestSpecWithAuth(FD))
 		.when()
 				.get("userdetails").then()
-				.spec(SpecUtil.responseSpec_OK())
+				.spec(responseSpec_OK())
 				.body(matchesJsonSchemaInClasspath("response-schema/UserDetailsResponseSchema.json"));
 	}
 
