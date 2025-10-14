@@ -1,5 +1,5 @@
 package com.api.request.model;
 
-//created by priyaa
+//created by priya
 public record UserCredentials(String username,String password){
 }
