@@ -2,9 +2,9 @@ name: Phoenix Test Automation Workflow
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master","feature/*" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "feature/*" ]
   schedule: #set the cron for midnight IST--UTC
        - cron: "30 18 * * *"
   workflow_dispatch:
